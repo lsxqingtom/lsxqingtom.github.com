@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Notification示例</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        padding: 20px;
+    }
+    button {
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+</style>
+</head>
+<body>
+    <h1>Notification示例</h1>
+    <button onclick="showNotification()">显示通知</button>
+
+    <script>
+        function showNotification() {
+            // 检查浏览器是否支持Notification API
+            if (!("Notification" in window)) {
+                alert("此浏览器不支持桌面通知");
+            } else if (Notification.permission === "granted") {
+                // 如果已经有权限，则创建通知
+                createNotification();
+            } else if (Notification.permission !== 'denied') {
+                // 否则，请求用户权限
+                Notification.requestPermission().then(function (permission) {
+                    if (permission === "granted") {
+                        createNotification();
+                    }
+                });
+            }
+        }
+
+        function createNotification() {
+            // 创建通知
+            var notification = new Notification("这是一个通知", {
+                body: "你收到了一条新的通知消息。",
+                icon: "https://via.placeholder.com/100", // 可以设置通知图标
+            });
+
+            // 可以在点击通知时执行操作
+            notification.onclick = function () {
+                console.log("通知被点击了");
+                // 可以在这里添加通知被点击后的处理逻辑
+            };
+
+            // 可以在通知关闭时执行操作
+            notification.onclose = function () {
+                console.log("通知被关闭了");
+                // 可以在这里添加通知被关闭后的处理逻辑
+            };
+        }
+    </script>
+</body>
+</html>
